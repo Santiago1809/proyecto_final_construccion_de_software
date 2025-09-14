@@ -20,7 +20,7 @@ public class RegisterUserService {
   private final PasswordEncoder passwordEncoder;
   private List<String> roles = List.of("ADMIN", "CLIENT");
 
-  public String register(UserEntity user) {
+  public UserEntity register(UserEntity user) {
     if (!roles.contains(user.getRol()))
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid role: " + user.getRol());
     if (user.getPassword().length() < 8)
@@ -34,7 +34,7 @@ public class RegisterUserService {
       user.setPassword(encryptedPassword);
 
       UserEntity saved = userRepositoryAdapter.save(user);
-      return "User registered successfully: " + saved.getUsername();
+      return saved;
     } catch (Exception e) {
       throw new ResponseStatusException(HttpStatus.CONFLICT, "User already exists or invalid data");
     }

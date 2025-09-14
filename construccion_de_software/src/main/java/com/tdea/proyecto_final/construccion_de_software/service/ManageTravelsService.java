@@ -25,7 +25,19 @@ public class ManageTravelsService {
   public TravelEntity getTravelById(Long id) {
     return travelRepository.findById(id).orElse(null);
   }
-  
+
+  public TravelEntity updateTravel(Long id, TravelEntity travelData) {
+    TravelEntity existingTravel = travelRepository.findById(id).orElse(null);
+    if (existingTravel != null) {
+      existingTravel.setDestination(travelData.getDestination());
+      existingTravel.setDepartureDate(travelData.getDepartureDate());
+      existingTravel.setReturnDate(travelData.getReturnDate());
+      existingTravel.setPrice(travelData.getPrice());
+      existingTravel.setItinerary(travelData.getItinerary());
+      return travelRepository.save(existingTravel);
+    }
+    return null;
+  }
 
   public void deleteTravel(Long id) {
     travelRepository.deleteById(id);

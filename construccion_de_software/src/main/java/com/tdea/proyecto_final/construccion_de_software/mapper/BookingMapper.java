@@ -17,7 +17,6 @@ public class BookingMapper {
 
     BookingResponse response = new BookingResponse();
     response.setId(booking.getId());
-    response.setBookingDate(booking.getBookingDate());
     response.setStatus(booking.getStatus());
 
     // Mapear información del usuario

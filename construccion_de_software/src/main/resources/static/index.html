@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Agencia de Viajes TDEA</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Navigation -->
+    <nav class="navbar" id="navbar">
+      <div class="nav-container">
+        <div class="nav-logo">
+          <i class="fas fa-plane"></i>
+          <span>TDEA Viajes</span>
+        </div>
+        <div class="nav-menu" id="nav-menu">
+          <div id="nav-guest" class="nav-section">
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('home')"
+              >Inicio</a
+            >
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('travels')"
+              >Destinos</a
+            >
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('login')"
+              >Iniciar Sesión</a
+            >
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('register')"
+              >Registro</a
+            >
+          </div>
+          <div id="nav-user" class="nav-section hidden">
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('travels')"
+              >Destinos</a
+            >
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('my-bookings')"
+              >Mis Reservas</a
+            >
+            <div class="nav-dropdown">
+              <a href="#" class="nav-link dropdown-toggle">
+                <i class="fas fa-user"></i>
+                <span id="user-name">Usuario</span>
+                <i class="fas fa-chevron-down"></i>
+              </a>
+              <div class="dropdown-menu">
+                <a href="#" onclick="event.preventDefault(); logout()"
+                  >Cerrar Sesión</a
+                >
+              </div>
+            </div>
+          </div>
+          <div id="nav-admin" class="nav-section hidden">
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('admin-travels')"
+              >Gestionar Viajes</a
+            >
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('admin-bookings')"
+              >Gestionar Reservas</a
+            >
+            <a
+              href="#"
+              class="nav-link"
+              onclick="event.preventDefault(); showPage('admin-payments')"
+              >Pagos</a
+            >
+          </div>
+        </div>
+        <div class="nav-toggle" id="nav-toggle">
+          <i class="fas fa-bars"></i>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Home Page -->
+      <section id="page-home" class="page active">
+        <div class="hero">
+          <div class="hero-content">
+            <h1>Descubre el Mundo con TDEA Viajes</h1>
+            <p>
+              Experiencias únicas, destinos increíbles, memorias para toda la
+              vida
+            </p>
+            <button class="cta-button" onclick="showPage('travels')">
+              Explorar Destinos
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="hero-image">
+            <i class="fas fa-globe-americas"></i>
+          </div>
+        </div>
+        <div class="features">
+          <div class="feature-card">
+            <i class="fas fa-map-marked-alt"></i>
+            <h3>Destinos Únicos</h3>
+            <p>Descubre lugares extraordinarios alrededor del mundo</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-shield-alt"></i>
+            <h3>Viajes Seguros</h3>
+            <p>Tu seguridad es nuestra prioridad</p>
+          </div>
+          <div class="feature-card">
+            <i class="fas fa-heart"></i>
+            <h3>Experiencias Memorables</h3>
+            <p>Creamos momentos que durarán para siempre</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Login Page -->
+      <section id="page-login" class="page">
+        <div class="auth-container">
+          <div class="auth-card">
+            <h2>Iniciar Sesión</h2>
+            <form id="login-form">
+              <div class="form-group">
+                <label for="login-username">Usuario</label>
+                <input
+                  type="text"
+                  id="login-username"
+                  name="username"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="login-password">Contraseña</label>
+                <input
+                  type="password"
+                  id="login-password"
+                  name="password"
+                  required
+                />
+              </div>
+              <button type="submit" class="auth-button">
+                <i class="fas fa-sign-in-alt"></i>
+                Iniciar Sesión
+              </button>
+            </form>
+            <div class="auth-link">
+              ¿No tienes cuenta?
+              <a href="#" onclick="event.preventDefault(); showPage('register')"
+                >Regístrate aquí</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Register Page -->
+      <section id="page-register" class="page">
+        <div class="auth-container">
+          <div class="auth-card">
+            <h2>Crear Cuenta</h2>
+            <form id="register-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="register-name">Nombre</label>
+                  <input type="text" id="register-name" name="name" required />
+                </div>
+                <div class="form-group">
+                  <label for="register-surname">Apellido</label>
+                  <input
+                    type="text"
+                    id="register-surname"
+                    name="surname"
+                    required
+                  />
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="register-username">Usuario</label>
+                <input
+                  type="text"
+                  id="register-username"
+                  name="username"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="register-email">Email</label>
+                <input type="email" id="register-email" name="email" required />
+              </div>
+              <div class="form-group">
+                <label for="register-phone">Teléfono</label>
+                <input type="tel" id="register-phone" name="phoneNumber" />
+              </div>
+              <div class="form-group">
+                <label for="register-address">Dirección</label>
+                <input type="text" id="register-address" name="address" />
+              </div>
+              <div class="form-group">
+                <label for="register-password">Contraseña</label>
+                <input
+                  type="password"
+                  id="register-password"
+                  name="password"
+                  required
+                />
+              </div>
+              <button type="submit" class="auth-button">
+                <i class="fas fa-user-plus"></i>
+                Crear Cuenta
+              </button>
+            </form>
+            <div class="auth-link">
+              ¿Ya tienes cuenta?
+              <a href="#" onclick="event.preventDefault(); showPage('login')"
+                >Inicia sesión aquí</a
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Travels Page -->
+      <section id="page-travels" class="page">
+        <div class="container">
+          <div class="page-header">
+            <h2>Destinos Disponibles</h2>
+            <div class="search-bar">
+              <input
+                type="text"
+                id="travel-search"
+                placeholder="Buscar destino..."
+              />
+              <i class="fas fa-search"></i>
+            </div>
+          </div>
+          <div id="travels-grid" class="travels-grid">
+            <!-- Travels will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- My Bookings Page -->
+      <section id="page-my-bookings" class="page">
+        <div class="container">
+          <div class="page-header">
+            <h2>Mis Reservas</h2>
+          </div>
+          <div id="my-bookings-list" class="bookings-list">
+            <!-- User bookings will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Travel Management -->
+      <section id="page-admin-travels" class="page">
+        <div class="container">
+          <div class="page-header">
+            <h2>Gestión de Viajes</h2>
+            <button class="primary-button" onclick="showCreateTravelModal()">
+              <i class="fas fa-plus"></i>
+              Nuevo Viaje
+            </button>
+          </div>
+          <div id="admin-travels-list" class="admin-list">
+            <!-- Admin travels will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Booking Management -->
+      <section id="page-admin-bookings" class="page">
+        <div class="container">
+          <div class="page-header">
+            <h2>Gestión de Reservas</h2>
+          </div>
+          <div id="admin-bookings-list" class="admin-list">
+            <!-- Admin bookings will be loaded here -->
+          </div>
+        </div>
+      </section>
+
+      <!-- Admin Payments -->
+      <section id="page-admin-payments" class="page">
+        <div class="container">
+          <div class="page-header">
+            <h2>Gestión de Pagos</h2>
+          </div>
+          <div id="admin-payments-list" class="payments-list">
+            <!-- Payments will be loaded here -->
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modals -->
+    <div id="modal-overlay" class="modal-overlay">
+      <!-- Travel Detail Modal -->
+      <div id="travel-detail-modal" class="modal">
+        <div class="modal-header">
+          <h3>Detalles del Viaje</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="travel-detail-content">
+          <!-- Travel details will be loaded here -->
+        </div>
+      </div>
+
+      <!-- Booking Modal -->
+      <div id="booking-modal" class="modal">
+        <div class="modal-header">
+          <h3>Realizar Reserva</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="booking-form">
+            <input type="hidden" id="booking-travel-id" />
+            <div class="form-actions">
+              <button
+                type="button"
+                class="secondary-button"
+                onclick="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="primary-button">
+                Confirmar Reserva
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Payment Modal -->
+      <div id="payment-modal" class="modal">
+        <div class="modal-header">
+          <h3>Realizar Pago</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="payment-form">
+            <input type="hidden" id="payment-booking-id" />
+            <div class="payment-summary" id="payment-summary">
+              <!-- Payment summary will be loaded here -->
+            </div>
+            <div class="form-group">
+              <label for="payment-amount">Monto a Pagar</label>
+              <input
+                type="number"
+                id="payment-amount"
+                name="amount"
+                step="0.01"
+                min="0.01"
+                required
+                placeholder="Ingrese el monto"
+              />
+            </div>
+            <div class="form-group">
+              <label for="payment-method">Método de Pago</label>
+              <select id="payment-method" name="paymentMethod" required>
+                <option value="">Seleccionar método</option>
+                <option value="CREDIT_CARD">Tarjeta de Crédito</option>
+                <option value="DEBIT_CARD">Tarjeta de Débito</option>
+                <option value="BANK_TRANSFER">Transferencia Bancaria</option>
+              </select>
+            </div>
+            <div class="form-actions">
+              <button
+                type="button"
+                class="secondary-button"
+                onclick="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="primary-button">
+                Procesar Pago
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Create Travel Modal -->
+      <div id="create-travel-modal" class="modal">
+        <div class="modal-header">
+          <h3>Crear Nuevo Viaje</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="create-travel-form">
+            <div class="form-group">
+              <label for="travel-destination">Destino</label>
+              <input
+                type="text"
+                id="travel-destination"
+                name="destination"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="travel-departure">Fecha de Salida</label>
+                <input
+                  type="date"
+                  id="travel-departure"
+                  name="departureDate"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="travel-return">Fecha de Regreso</label>
+                <input
+                  type="date"
+                  id="travel-return"
+                  name="returnDate"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="travel-price">Precio</label>
+              <input
+                type="number"
+                id="travel-price"
+                name="price"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="travel-itinerary">Itinerario</label>
+              <textarea
+                id="travel-itinerary"
+                name="itinerary"
+                rows="4"
+              ></textarea>
+            </div>
+            <div class="form-actions">
+              <button
+                type="button"
+                class="secondary-button"
+                onclick="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="primary-button">Crear Viaje</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Edit Travel Modal -->
+      <div id="edit-travel-modal" class="modal">
+        <div class="modal-header">
+          <h3>Editar Viaje</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-travel-form">
+            <input type="hidden" id="edit-travel-id" />
+            <div class="form-group">
+              <label for="edit-travel-destination">Destino</label>
+              <input
+                type="text"
+                id="edit-travel-destination"
+                name="destination"
+                required
+              />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="edit-travel-departure">Fecha de Salida</label>
+                <input
+                  type="date"
+                  id="edit-travel-departure"
+                  name="departureDate"
+                  required
+                />
+              </div>
+              <div class="form-group">
+                <label for="edit-travel-return">Fecha de Regreso</label>
+                <input
+                  type="date"
+                  id="edit-travel-return"
+                  name="returnDate"
+                  required
+                />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="edit-travel-price">Precio</label>
+              <input
+                type="number"
+                id="edit-travel-price"
+                name="price"
+                step="0.01"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="edit-travel-itinerary">Itinerario</label>
+              <textarea
+                id="edit-travel-itinerary"
+                name="itinerary"
+                rows="4"
+              ></textarea>
+            </div>
+            <div class="form-actions">
+              <button
+                type="button"
+                class="secondary-button"
+                onclick="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="primary-button">
+                Actualizar Viaje
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading" class="loading hidden">
+      <div class="spinner"></div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/travels.js"></script>
+    <script src="js/bookings.js"></script>
+    <script src="js/payments.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

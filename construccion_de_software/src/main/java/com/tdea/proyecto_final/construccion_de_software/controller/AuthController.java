@@ -21,8 +21,8 @@ public class AuthController {
   private final LoginUserService loginUserUseCase;
 
   @PostMapping("/register")
-  public ResponseEntity<String> register(@RequestBody UserEntity user) {
-    String result = registerUserUseCase.register(user);
+  public ResponseEntity<UserEntity> register(@RequestBody UserEntity user) {
+    UserEntity result = registerUserUseCase.register(user);
     return ResponseEntity.ok(result);
   }
 

@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-ConstruccionDeSoftwareApplication<construccion_de_software>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "mainClass": "com.tdea.proyecto_final.construccion_de_software.ConstruccionDeSoftwareApplication",
+      "projectName": "construccion_de_software",
+      "args": "",
+      "envFile": "${workspaceFolder}/.env"
+    }
+  ]
+}

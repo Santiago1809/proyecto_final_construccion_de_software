@@ -33,7 +33,7 @@ public class ManagePaymentsService {
         .orElseThrow(() -> new RuntimeException("Booking not found with id: " + request.getBookingId()));
 
     // Verificar que la reserva está confirmada
-    if (!"CONFIRMED".equals(booking.getStatus())) {
+    if ("CONFIRMED".equals(booking.getStatus())) {
       throw new RuntimeException("Cannot process payment for booking with status: " + booking.getStatus());
     }
 

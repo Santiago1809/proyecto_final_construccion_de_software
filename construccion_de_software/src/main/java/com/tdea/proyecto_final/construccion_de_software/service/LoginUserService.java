@@ -20,7 +20,7 @@ public class LoginUserService {
   public UserEntity login(String username, String rawPassword) {
     UserEntity user = userRepositoryAdapter.findByUsername(username)
         .orElseThrow(() -> new RuntimeException("User not found"));
-
+      System.out.println(rawPassword);
     // Verify password using BCrypt
     if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials");

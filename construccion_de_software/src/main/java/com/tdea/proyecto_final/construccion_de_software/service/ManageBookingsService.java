@@ -23,7 +23,7 @@ public class ManageBookingsService {
   private final UserRepository userRepository;
   private final TravelRepository travelRepository;
   private final List<String> status = List.of("PENDING", "CONFIRMED", "CANCELLED", "REJECTED", "ON_HOLD", "REFUNDED",
-      "NO_SHOW");
+      "NO_SHOW", "PAID");
 
   public BookingEntity createBooking(BookingRequest bookingRequest) {
     // Validate status
@@ -42,14 +42,8 @@ public class ManageBookingsService {
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
             "Travel not found with id: " + bookingRequest.getTravelId()));
 
-    // Validate booking date
-    if (!bookingRequest.getBookingDate().isEqual(travel.getDepartureDate())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Booking date must be within the travel dates.");
-    }
-
     // Create booking entity
     BookingEntity booking = new BookingEntity();
-    booking.setBookingDate(bookingRequest.getBookingDate());
     booking.setStatus(bookingRequest.getStatus());
     booking.setUser(user);
     booking.setTravel(travel);
@@ -58,11 +52,6 @@ public class ManageBookingsService {
   }
 
   public BookingEntity createBooking(BookingEntity booking) {
-    TravelEntity travel = booking.getTravel();
-    if (booking.getBookingDate().isAfter(travel.getDepartureDate())
-        || booking.getBookingDate().isBefore(travel.getReturnDate())) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Booking date must be within the travel dates.");
-    }
     if (!status.contains(booking.getStatus())) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid booking status: " + booking.getStatus());
     }

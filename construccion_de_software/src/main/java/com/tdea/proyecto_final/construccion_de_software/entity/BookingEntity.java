@@ -27,7 +27,6 @@ public class BookingEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-  private LocalDate bookingDate;
   private String status;
 
   @ManyToOne
