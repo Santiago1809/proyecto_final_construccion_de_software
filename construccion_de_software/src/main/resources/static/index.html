@@ -542,6 +542,84 @@
           </form>
         </div>
       </div>
+
+      <!-- Edit Booking Modal -->
+      <div id="edit-booking-modal" class="modal">
+        <div class="modal-header">
+          <h3>Editar Reserva</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-booking-form">
+            <input type="hidden" id="edit-booking-id" />
+
+            <div class="form-group">
+              <label>Información del Viaje</label>
+              <div class="info-display">
+                <p>
+                  <strong>Destino:</strong>
+                  <span id="edit-booking-destination"></span>
+                </p>
+                <p>
+                  <strong>Fecha de Reserva:</strong>
+                  <span id="edit-booking-date"></span>
+                </p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Información del Cliente</label>
+              <div class="info-display">
+                <p>
+                  <strong>Cliente:</strong>
+                  <span id="edit-booking-client"></span>
+                </p>
+                <p>
+                  <strong>Email:</strong> <span id="edit-booking-email"></span>
+                </p>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-booking-status">Estado de la Reserva</label>
+              <select id="edit-booking-status" name="status" required>
+                <option value="PENDING">Pendiente</option>
+                <option value="CONFIRMED">Confirmada</option>
+                <option value="CANCELLED">Cancelada</option>
+                <option value="REJECTED">Rechazada</option>
+                <option value="ON_HOLD">En Espera</option>
+                <option value="REFUNDED">Reembolsada</option>
+                <option value="NO_SHOW">No se Presentó</option>
+                <option value="PAID">Pagada</option>
+              </select>
+            </div>
+
+            <div class="form-actions">
+              <button
+                type="button"
+                class="secondary-button"
+                onclick="closeModal()"
+              >
+                Cancelar
+              </button>
+              <button type="submit" class="primary-button">
+                Guardar Cambios
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Booking Details Modal -->
+      <div id="booking-details-modal" class="modal">
+        <div class="modal-header">
+          <h3>Detalles de la Reserva</h3>
+          <button class="modal-close" onclick="closeModal()">&times;</button>
+        </div>
+        <div class="modal-body" id="booking-details-content">
+          <!-- Content will be filled by JavaScript -->
+        </div>
+      </div>
     </div>
 
     <!-- Loading Spinner -->

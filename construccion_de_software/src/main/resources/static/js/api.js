@@ -165,14 +165,9 @@ const TravelAPI = {
    * @returns {Promise} Lista de viajes
    */
   async getAll() {
-    try {
-      const travels = await API.get(CONFIG.ENDPOINTS.TRAVELS.BASE);
-      AppState.travels = travels;
-      return travels;
-    } catch (error) {
-      Toast.error("Error al cargar los viajes");
-      throw error;
-    }
+    const travels = await API.get(CONFIG.ENDPOINTS.TRAVELS.BASE);
+    AppState.travels = travels;
+    return travels;
   },
 
   /**
@@ -181,12 +176,7 @@ const TravelAPI = {
    * @returns {Promise} Datos del viaje
    */
   async getById(id) {
-    try {
-      return await API.get(`${CONFIG.ENDPOINTS.TRAVELS.BASE}/${id}`);
-    } catch (error) {
-      Toast.error("Error al cargar el viaje");
-      throw error;
-    }
+    return await API.get(`${CONFIG.ENDPOINTS.TRAVELS.BASE}/${id}`);
   },
 
   /**
@@ -195,17 +185,9 @@ const TravelAPI = {
    * @returns {Promise} Viaje creado
    */
   async create(travelData) {
-    try {
-      const travel = await API.post(
-        CONFIG.ENDPOINTS.TRAVELS.CREATE,
-        travelData
-      );
-      Toast.success("Viaje creado correctamente");
-      return travel;
-    } catch (error) {
-      Toast.error("Error al crear el viaje");
-      throw error;
-    }
+    const travel = await API.post(CONFIG.ENDPOINTS.TRAVELS.CREATE, travelData);
+    Toast.success("Viaje creado correctamente");
+    return travel;
   },
 
   /**
@@ -215,17 +197,12 @@ const TravelAPI = {
    * @returns {Promise} Viaje actualizado
    */
   async update(id, travelData) {
-    try {
-      const travel = await API.put(
-        `${CONFIG.ENDPOINTS.TRAVELS.BASE}/${id}`,
-        travelData
-      );
-      Toast.success("Viaje actualizado correctamente");
-      return travel;
-    } catch (error) {
-      Toast.error("Error al actualizar el viaje");
-      throw error;
-    }
+    const travel = await API.put(
+      `${CONFIG.ENDPOINTS.TRAVELS.BASE}/update/${id}`,
+      travelData
+    );
+    Toast.success("Viaje actualizado correctamente");
+    return travel;
   },
 
   /**
@@ -234,16 +211,9 @@ const TravelAPI = {
    * @returns {Promise} Resultado de la eliminación
    */
   async delete(id) {
-    try {
-      const result = await API.delete(
-        `${CONFIG.ENDPOINTS.TRAVELS.DELETE}/${id}`
-      );
-      Toast.success("Viaje eliminado correctamente");
-      return result;
-    } catch (error) {
-      Toast.error("Error al eliminar el viaje");
-      throw error;
-    }
+    const result = await API.delete(`${CONFIG.ENDPOINTS.TRAVELS.DELETE}/${id}`);
+    Toast.success("Viaje eliminado correctamente");
+    return result;
   },
 };
 
@@ -256,12 +226,7 @@ const BookingAPI = {
    * @returns {Promise} Lista de reservas
    */
   async getAll() {
-    try {
-      return await API.get(CONFIG.ENDPOINTS.BOOKINGS.BASE);
-    } catch (error) {
-      Toast.error("Error al cargar las reservas");
-      throw error;
-    }
+    return await API.get(CONFIG.ENDPOINTS.BOOKINGS.BASE);
   },
 
   /**

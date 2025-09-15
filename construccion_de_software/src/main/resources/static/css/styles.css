@@ -739,6 +739,206 @@ html {
   font-size: 0.875rem;
 }
 
+/* Travel Bookings Groups */
+.travel-bookings-group {
+  background: var(--bg-primary);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  margin-bottom: 2rem;
+  overflow: hidden;
+  border: 1px solid var(--border-light);
+}
+
+.travel-group-header {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.travel-group-header h3 {
+  font-size: 1.5rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.travel-group-header p {
+  color: var(--text-secondary);
+  margin: 0.25rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.bookings-table-container {
+  overflow-x: auto;
+}
+
+.bookings-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.bookings-table thead {
+  background: var(--bg-tertiary);
+}
+
+.bookings-table th,
+.bookings-table td {
+  padding: 0.75rem;
+  text-align: left;
+  border-bottom: 1px solid var(--border-light);
+  vertical-align: middle;
+}
+
+.bookings-table th {
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.bookings-table tbody tr:hover {
+  background-color: var(--bg-secondary);
+}
+
+.booking-id {
+  font-weight: var(--font-weight-medium);
+  color: var(--primary-color);
+}
+
+.client-name {
+  font-weight: var(--font-weight-medium);
+  color: var(--text-primary);
+}
+
+.status-badge {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+}
+
+.payments-info {
+  text-align: center;
+}
+
+.payment-amount {
+  font-weight: var(--font-weight-semibold);
+  color: var(--success-color);
+}
+
+.no-payments {
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.booking-actions {
+  white-space: nowrap;
+}
+
+.btn {
+  padding: 0.375rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  font-size: 0.875rem;
+  font-weight: var(--font-weight-medium);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-sm {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  margin: 0 0.125rem;
+}
+
+.btn-primary {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: var(--primary-dark);
+}
+
+.btn-info {
+  background-color: var(--info-color);
+  color: white;
+}
+
+.btn-info:hover {
+  background-color: #2563eb;
+}
+
+.btn-danger {
+  background-color: var(--danger-color);
+  color: white;
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+}
+
+/* Modal Info Display */
+.info-display {
+  background-color: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-light);
+}
+
+.info-display p {
+  margin: 0.5rem 0;
+  color: var(--text-secondary);
+}
+
+.info-display strong {
+  color: var(--text-primary);
+}
+
+.detail-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-light);
+}
+
+.detail-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.detail-section h5 {
+  font-size: 1rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.payment-detail {
+  background-color: var(--bg-secondary);
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--border-light);
+}
+
+.payment-detail p {
+  margin: 0.25rem 0;
+  color: var(--text-secondary);
+}
+
 /* Bookings List in Travel Details */
 .bookings-list {
   display: flex;

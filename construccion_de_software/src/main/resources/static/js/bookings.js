@@ -131,7 +131,7 @@ async function loadAdminBookings() {
 }
 
 /**
- * Muestra las reservas en la vista de administrador
+ * Muestra las reservas en la vista de administrador agrupadas por viaje
  * @param {Array} bookings - Lista de reservas
  */
 function displayAdminBookings(bookings) {
@@ -148,9 +148,136 @@ function displayAdminBookings(bookings) {
     return;
   }
 
-  list.innerHTML = bookings
-    .map((booking) => createBookingCard(booking, true))
+  // Agrupar reservas por viaje
+  const bookingsByTravel = groupBookingsByTravel(bookings);
+
+  list.innerHTML = Object.entries(bookingsByTravel)
+    .map(([travelId, travelBookings]) =>
+      createTravelBookingsTable(travelBookings)
+    )
     .join("");
+}
+
+/**
+ * Agrupa las reservas por viaje
+ * @param {Array} bookings - Lista de reservas
+ * @returns {Object} Reservas agrupadas por ID de viaje
+ */
+function groupBookingsByTravel(bookings) {
+  return bookings.reduce((groups, booking) => {
+    const travelId = booking.travel?.id || "unknown";
+    if (!groups[travelId]) {
+      groups[travelId] = [];
+    }
+    groups[travelId].push(booking);
+    return groups;
+  }, {});
+}
+
+/**
+ * Crea una tabla de reservas para un viaje específico
+ * @param {Array} bookings - Lista de reservas del viaje
+ * @returns {string} HTML de la tabla
+ */
+function createTravelBookingsTable(bookings) {
+  if (!bookings || bookings.length === 0) return "";
+
+  const travel = bookings[0].travel;
+  const totalBookings = bookings.length;
+
+  return `
+    <div class="travel-bookings-group">
+      <div class="travel-group-header">
+        <div class="travel-info">
+          <h3>${escapeHtml(travel?.destination || "Destino no disponible")}</h3>
+          <p><i class="fas fa-calendar-alt"></i> ${formatDate(
+            travel?.departureDate
+          )} - ${formatDate(travel?.returnDate)}</p>
+          <p><i class="fas fa-money-bill-wave"></i> ${formatCurrency(
+            travel?.price
+          )} | <i class="fas fa-users"></i> ${totalBookings} reservas</p>
+        </div>
+      </div>
+      <div class="bookings-table-container">
+        <table class="bookings-table">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Cliente</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+              <th>Pagos</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${bookings
+              .map((booking) => createBookingTableRow(booking))
+              .join("")}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `;
+}
+
+/**
+ * Crea una fila de la tabla para una reserva
+ * @param {Object} booking - Datos de la reserva
+ * @returns {string} HTML de la fila
+ */
+function createBookingTableRow(booking) {
+  const statusClass = getBookingStatusClass(booking.status);
+  const statusText = getBookingStatusText(booking.status);
+  const totalPaid =
+    booking.payments?.reduce((sum, payment) => sum + payment.amount, 0) || 0;
+
+  return `
+    <tr class="booking-row">
+      <td class="booking-id">#${booking.id}</td>
+      <td class="client-name">
+        ${escapeHtml(booking.user?.name || "")} ${escapeHtml(
+    booking.user?.surname || ""
+  )}
+      </td>
+      <td class="client-email">${escapeHtml(
+        booking.user?.email || "No disponible"
+      )}</td>
+      <td class="client-phone">${escapeHtml(
+        booking.user?.phoneNumber || "No disponible"
+      )}</td>
+      <td class="booking-status">
+        <span class="status-badge ${statusClass}">${statusText}</span>
+      </td>
+      <td class="payments-info">
+        ${
+          booking.payments && booking.payments.length > 0
+            ? `<span class="payment-amount">${formatCurrency(
+                totalPaid
+              )}</span><br><small>${booking.payments.length} pago(s)</small>`
+            : '<span class="no-payments">Sin pagos</span>'
+        }
+      </td>
+      <td class="booking-actions">
+        <button class="btn btn-sm btn-primary" onclick="showEditBookingModal(${
+          booking.id
+        })" title="Editar reserva">
+          <i class="fas fa-edit"></i>
+        </button>
+        <button class="btn btn-sm btn-info" onclick="showBookingDetailsModal(${
+          booking.id
+        })" title="Ver detalles">
+          <i class="fas fa-eye"></i>
+        </button>
+        <button class="btn btn-sm btn-danger" onclick="deleteBooking(${
+          booking.id
+        })" title="Eliminar reserva">
+          <i class="fas fa-trash"></i>
+        </button>
+      </td>
+    </tr>
+  `;
 }
 
 /**
@@ -477,10 +604,163 @@ async function deleteBooking(bookingId) {
 }
 
 /**
+ * Muestra el modal para editar una reserva
+ * @param {number} bookingId - ID de la reserva
+ */
+async function showEditBookingModal(bookingId) {
+  try {
+    const booking = await BookingAPI.getById(bookingId);
+
+    // Llenar el formulario con los datos existentes
+    document.getElementById("edit-booking-id").value = booking.id;
+    document.getElementById("edit-booking-status").value = booking.status;
+
+    // Mostrar información del viaje y cliente
+    document.getElementById("edit-booking-destination").textContent =
+      booking.travel?.destination || "No disponible";
+    document.getElementById("edit-booking-client").textContent =
+      `${booking.user?.name || ""} ${booking.user?.surname || ""}`.trim() ||
+      "No disponible";
+    document.getElementById("edit-booking-email").textContent =
+      booking.user?.email || "No disponible";
+    document.getElementById("edit-booking-date").textContent = formatDate(
+      booking.bookingDate
+    );
+
+    Modal.show("edit-booking-modal");
+  } catch (error) {
+    console.error("Error cargando datos de la reserva:", error);
+    Toast.error("Error al cargar los datos de la reserva");
+  }
+}
+
+/**
+ * Muestra el modal con detalles completos de una reserva
+ * @param {number} bookingId - ID de la reserva
+ */
+async function showBookingDetailsModal(bookingId) {
+  try {
+    const booking = await BookingAPI.getById(bookingId);
+
+    const content = document.getElementById("booking-details-content");
+    content.innerHTML = `
+      <div class="booking-details-modal">
+        <div class="detail-section">
+          <h5><i class="fas fa-map-marker-alt"></i> Información del Viaje</h5>
+          <p><strong>Destino:</strong> ${escapeHtml(
+            booking.travel?.destination || "No disponible"
+          )}</p>
+          <p><strong>Salida:</strong> ${formatDate(
+            booking.travel?.departureDate
+          )}</p>
+          <p><strong>Regreso:</strong> ${formatDate(
+            booking.travel?.returnDate
+          )}</p>
+          <p><strong>Precio:</strong> ${formatCurrency(
+            booking.travel?.price
+          )}</p>
+        </div>
+        
+        <div class="detail-section">
+          <h5><i class="fas fa-user"></i> Información del Cliente</h5>
+          <p><strong>Nombre:</strong> ${escapeHtml(
+            booking.user?.name || ""
+          )} ${escapeHtml(booking.user?.surname || "")}</p>
+          <p><strong>Email:</strong> ${escapeHtml(
+            booking.user?.email || "No disponible"
+          )}</p>
+          <p><strong>Teléfono:</strong> ${escapeHtml(
+            booking.user?.phoneNumber || "No disponible"
+          )}</p>
+          <p><strong>Usuario:</strong> ${escapeHtml(
+            booking.user?.username || "No disponible"
+          )}</p>
+        </div>
+        
+        <div class="detail-section">
+          <h5><i class="fas fa-calendar-alt"></i> Información de la Reserva</h5>
+          <p><strong>ID:</strong> #${booking.id}</p>
+          <p><strong>Fecha de Reserva:</strong> ${formatDate(
+            booking.bookingDate
+          )}</p>
+          <p><strong>Estado:</strong> <span class="status-badge ${getBookingStatusClass(
+            booking.status
+          )}">${getBookingStatusText(booking.status)}</span></p>
+        </div>
+        
+        ${
+          booking.payments && booking.payments.length > 0
+            ? `
+        <div class="detail-section">
+          <h5><i class="fas fa-receipt"></i> Pagos (${
+            booking.payments.length
+          })</h5>
+          ${booking.payments
+            .map(
+              (payment) => `
+            <div class="payment-detail">
+              <p><strong>Monto:</strong> ${formatCurrency(payment.amount)}</p>
+              <p><strong>Fecha:</strong> ${formatDate(payment.paymentDate)}</p>
+            </div>
+          `
+            )
+            .join("")}
+        </div>
+        `
+            : ""
+        }
+      </div>
+    `;
+
+    Modal.show("booking-details-modal");
+  } catch (error) {
+    console.error("Error cargando detalles de la reserva:", error);
+    Toast.error("Error al cargar los detalles de la reserva");
+  }
+}
+
+/**
+ * Guarda los cambios de una reserva editada
+ */
+async function saveBookingChanges() {
+  try {
+    const bookingId = parseInt(
+      document.getElementById("edit-booking-id").value
+    );
+    const newStatus = document.getElementById("edit-booking-status").value;
+
+    await BookingAPI.updateStatus(bookingId, newStatus);
+
+    Modal.hide();
+    Toast.success("Reserva actualizada exitosamente");
+
+    // Recargar las reservas
+    loadAdminBookings();
+  } catch (error) {
+    console.error("Error actualizando reserva:", error);
+    Toast.error("Error al actualizar la reserva");
+  }
+}
+
+/**
+ * Inicializa el formulario de edición de reserva
+ */
+function initEditBookingForm() {
+  const form = document.getElementById("edit-booking-form");
+  if (!form) return;
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    await saveBookingChanges();
+  });
+}
+
+/**
  * Inicializa el módulo de reservas
  */
 function initBookings() {
   initBookingForm();
+  initEditBookingForm();
 }
 
 // Exportar funciones para uso global
@@ -490,4 +770,7 @@ window.loadAdminBookings = loadAdminBookings;
 window.cancelBooking = cancelBooking;
 window.updateBookingStatus = updateBookingStatus;
 window.deleteBooking = deleteBooking;
+window.showEditBookingModal = showEditBookingModal;
+window.showBookingDetailsModal = showBookingDetailsModal;
+window.saveBookingChanges = saveBookingChanges;
 window.initBookings = initBookings;
