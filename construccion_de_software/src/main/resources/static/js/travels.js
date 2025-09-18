@@ -466,14 +466,18 @@ function initTravels() {
 async function applyTravelFilters() {
   try {
     const filters = {
-      destination: document.getElementById('travel-destination-filter')?.value?.trim() || null,
-      departureDate: document.getElementById('travel-departure-filter')?.value || null,
-      arrivalDate: document.getElementById('travel-arrival-filter')?.value || null,
-      status: document.getElementById('travel-status-filter')?.value || null
+      destination:
+        document.getElementById("travel-destination-filter")?.value?.trim() ||
+        null,
+      departureDate:
+        document.getElementById("travel-departure-filter")?.value || null,
+      arrivalDate:
+        document.getElementById("travel-arrival-filter")?.value || null,
+      status: document.getElementById("travel-status-filter")?.value || null,
     };
 
     // Remover filtros vacíos
-    Object.keys(filters).forEach(key => {
+    Object.keys(filters).forEach((key) => {
       if (!filters[key]) delete filters[key];
     });
 
@@ -486,8 +490,8 @@ async function applyTravelFilters() {
 
     displayAdminTravels(travels);
   } catch (error) {
-    console.error('Error al aplicar filtros de viajes:', error);
-    Toast.error('Error al filtrar viajes');
+    console.error("Error al aplicar filtros de viajes:", error);
+    Toast.error("Error al filtrar viajes");
   }
 }
 
@@ -495,11 +499,11 @@ async function applyTravelFilters() {
  * Limpia todos los filtros de viajes
  */
 async function clearTravelFilters() {
-  document.getElementById('travel-destination-filter').value = '';
-  document.getElementById('travel-departure-filter').value = '';
-  document.getElementById('travel-arrival-filter').value = '';
-  document.getElementById('travel-status-filter').value = '';
-  
+  document.getElementById("travel-destination-filter").value = "";
+  document.getElementById("travel-departure-filter").value = "";
+  document.getElementById("travel-arrival-filter").value = "";
+  document.getElementById("travel-status-filter").value = "";
+
   await loadAdminTravels();
 }
 

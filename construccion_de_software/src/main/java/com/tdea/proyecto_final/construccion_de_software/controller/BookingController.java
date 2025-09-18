@@ -56,8 +56,9 @@ public class BookingController {
       @RequestParam(required = false) String destination,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
-    
-    List<BookingEntity> bookings = manageBookingsUseCase.filterBookings(status, userEmail, destination, dateFrom, dateTo);
+
+    List<BookingEntity> bookings = manageBookingsUseCase.filterBookings(status, userEmail, destination, dateFrom,
+        dateTo);
     List<BookingResponse> response = bookings.stream()
         .map(bookingMapper::toResponse)
         .collect(Collectors.toList());

@@ -16,11 +16,11 @@ public class PaymentResponse {
   private LocalDate paymentDate;
   private String paymentMethod;
   private Long bookingId;
-  
+
   // Información adicional del usuario y viaje
   private UserInfo userInfo;
   private TravelInfo travelInfo;
-  
+
   @Data
   @NoArgsConstructor
   @AllArgsConstructor
@@ -30,7 +30,7 @@ public class PaymentResponse {
     private String firstName;
     private String lastName;
   }
-  
+
   @Data
   @NoArgsConstructor
   @AllArgsConstructor

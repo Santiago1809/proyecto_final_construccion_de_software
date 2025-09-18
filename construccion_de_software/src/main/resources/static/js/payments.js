@@ -3,7 +3,7 @@
 /**
  * Muestra el modal de pago para una reserva
  * @param {number} bookingId - ID de la reserva
- *//**
+ */ /**
  * Carga y muestra todos los pagos para el admin
  */
 async function loadAdminPayments() {
@@ -294,14 +294,11 @@ function createPaymentCard(payment) {
                       payment.amount
                     )}</span>
                     <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(
-                      payment.travelInfo?.destination ||
-                        "Destino no disponible"
+                      payment.travelInfo?.destination || "Destino no disponible"
                     )}</span>
                     <span><i class="fas fa-user"></i> ${escapeHtml(
                       payment.userInfo?.firstName || "Usuario no disponible"
-                    )} ${escapeHtml(
-    payment.userInfo?.lastName || ""
-  )}</span>
+                    )} ${escapeHtml(payment.userInfo?.lastName || "")}</span>
                 </div>
             </div>
         </div>
@@ -351,16 +348,21 @@ function initPayments() {
 async function applyPaymentFilters() {
   try {
     const filters = {
-      userEmail: document.getElementById('payment-user-filter')?.value?.trim() || null,
-      paymentMethod: document.getElementById('payment-method-filter')?.value || null,
-      minAmount: document.getElementById('payment-amount-min-filter')?.value || null,
-      maxAmount: document.getElementById('payment-amount-max-filter')?.value || null,
-      dateFrom: document.getElementById('payment-date-from-filter')?.value || null,
-      dateTo: document.getElementById('payment-date-to-filter')?.value || null
+      userEmail:
+        document.getElementById("payment-user-filter")?.value?.trim() || null,
+      paymentMethod:
+        document.getElementById("payment-method-filter")?.value || null,
+      minAmount:
+        document.getElementById("payment-amount-min-filter")?.value || null,
+      maxAmount:
+        document.getElementById("payment-amount-max-filter")?.value || null,
+      dateFrom:
+        document.getElementById("payment-date-from-filter")?.value || null,
+      dateTo: document.getElementById("payment-date-to-filter")?.value || null,
     };
 
     // Remover filtros vacíos
-    Object.keys(filters).forEach(key => {
+    Object.keys(filters).forEach((key) => {
       if (!filters[key]) delete filters[key];
     });
 
@@ -373,8 +375,8 @@ async function applyPaymentFilters() {
 
     displayAdminPayments(payments);
   } catch (error) {
-    console.error('Error al aplicar filtros de pagos:', error);
-    Toast.error('Error al filtrar pagos');
+    console.error("Error al aplicar filtros de pagos:", error);
+    Toast.error("Error al filtrar pagos");
   }
 }
 
@@ -382,13 +384,13 @@ async function applyPaymentFilters() {
  * Limpia todos los filtros de pagos
  */
 async function clearPaymentFilters() {
-  document.getElementById('payment-user-filter').value = '';
-  document.getElementById('payment-method-filter').value = '';
-  document.getElementById('payment-amount-min-filter').value = '';
-  document.getElementById('payment-amount-max-filter').value = '';
-  document.getElementById('payment-date-from-filter').value = '';
-  document.getElementById('payment-date-to-filter').value = '';
-  
+  document.getElementById("payment-user-filter").value = "";
+  document.getElementById("payment-method-filter").value = "";
+  document.getElementById("payment-amount-min-filter").value = "";
+  document.getElementById("payment-amount-max-filter").value = "";
+  document.getElementById("payment-date-from-filter").value = "";
+  document.getElementById("payment-date-to-filter").value = "";
+
   await loadAdminPayments();
 }
 

@@ -93,13 +93,16 @@ public class ManageBookingsService {
     return bookingRepository.save(booking);
   }
 
-  public List<BookingEntity> filterBookings(String status, String userEmail, String destination, LocalDate dateFrom, LocalDate dateTo) {
+  public List<BookingEntity> filterBookings(String status, String userEmail, String destination, LocalDate dateFrom,
+      LocalDate dateTo) {
     List<BookingEntity> bookings = bookingRepository.findAll();
-    
+
     return bookings.stream()
         .filter(booking -> status == null || status.equals("") || booking.getStatus().equalsIgnoreCase(status))
-        .filter(booking -> userEmail == null || booking.getUser().getEmail().toLowerCase().contains(userEmail.toLowerCase()))
-        .filter(booking -> destination == null || booking.getTravel().getDestination().toLowerCase().contains(destination.toLowerCase()))
+        .filter(booking -> userEmail == null
+            || booking.getUser().getEmail().toLowerCase().contains(userEmail.toLowerCase()))
+        .filter(booking -> destination == null
+            || booking.getTravel().getDestination().toLowerCase().contains(destination.toLowerCase()))
         .filter(booking -> dateFrom == null || !booking.getTravel().getDepartureDate().isBefore(dateFrom))
         .filter(booking -> dateTo == null || !booking.getTravel().getDepartureDate().isAfter(dateTo))
         .collect(Collectors.toList());

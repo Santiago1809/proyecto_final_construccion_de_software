@@ -1642,12 +1642,12 @@ html {
   .filters-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .filter-actions {
     grid-column: 1 / -1;
     justify-content: stretch;
   }
-  
+
   .filter-actions button {
     flex: 1;
   }
@@ -1657,7 +1657,7 @@ html {
   .filters-section {
     padding: 1rem;
   }
-  
+
   .filter-actions {
     flex-direction: column;
   }

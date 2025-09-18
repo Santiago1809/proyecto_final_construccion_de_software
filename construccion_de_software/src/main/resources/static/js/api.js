@@ -223,13 +223,16 @@ const TravelAPI = {
    */
   async filter(filters) {
     const params = new URLSearchParams();
-    
-    if (filters.destination) params.append('destination', filters.destination);
-    if (filters.departureDate) params.append('departureDate', filters.departureDate);
-    if (filters.arrivalDate) params.append('arrivalDate', filters.arrivalDate);
-    if (filters.status) params.append('status', filters.status);
-    
-    const endpoint = `${CONFIG.ENDPOINTS.TRAVELS.BASE}/filter?${params.toString()}`;
+
+    if (filters.destination) params.append("destination", filters.destination);
+    if (filters.departureDate)
+      params.append("departureDate", filters.departureDate);
+    if (filters.arrivalDate) params.append("arrivalDate", filters.arrivalDate);
+    if (filters.status) params.append("status", filters.status);
+
+    const endpoint = `${
+      CONFIG.ENDPOINTS.TRAVELS.BASE
+    }/filter?${params.toString()}`;
     return await API.get(endpoint);
   },
 };
@@ -340,14 +343,17 @@ const BookingAPI = {
   async filter(filters) {
     try {
       const params = new URLSearchParams();
-      
-      if (filters.status) params.append('status', filters.status);
-      if (filters.userEmail) params.append('userEmail', filters.userEmail);
-      if (filters.destination) params.append('destination', filters.destination);
-      if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
-      if (filters.dateTo) params.append('dateTo', filters.dateTo);
-      
-      const endpoint = `${CONFIG.ENDPOINTS.BOOKINGS.BASE}/filter?${params.toString()}`;
+
+      if (filters.status) params.append("status", filters.status);
+      if (filters.userEmail) params.append("userEmail", filters.userEmail);
+      if (filters.destination)
+        params.append("destination", filters.destination);
+      if (filters.dateFrom) params.append("dateFrom", filters.dateFrom);
+      if (filters.dateTo) params.append("dateTo", filters.dateTo);
+
+      const endpoint = `${
+        CONFIG.ENDPOINTS.BOOKINGS.BASE
+      }/filter?${params.toString()}`;
       return await API.get(endpoint);
     } catch (error) {
       Toast.error("Error al filtrar reservas");
@@ -418,15 +424,18 @@ const PaymentAPI = {
   async filter(filters) {
     try {
       const params = new URLSearchParams();
-      
-      if (filters.userEmail) params.append('userEmail', filters.userEmail);
-      if (filters.paymentMethod) params.append('paymentMethod', filters.paymentMethod);
-      if (filters.minAmount) params.append('minAmount', filters.minAmount);
-      if (filters.maxAmount) params.append('maxAmount', filters.maxAmount);
-      if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
-      if (filters.dateTo) params.append('dateTo', filters.dateTo);
-      
-      const endpoint = `${CONFIG.ENDPOINTS.PAYMENTS.BASE}/filter?${params.toString()}`;
+
+      if (filters.userEmail) params.append("userEmail", filters.userEmail);
+      if (filters.paymentMethod)
+        params.append("paymentMethod", filters.paymentMethod);
+      if (filters.minAmount) params.append("minAmount", filters.minAmount);
+      if (filters.maxAmount) params.append("maxAmount", filters.maxAmount);
+      if (filters.dateFrom) params.append("dateFrom", filters.dateFrom);
+      if (filters.dateTo) params.append("dateTo", filters.dateTo);
+
+      const endpoint = `${
+        CONFIG.ENDPOINTS.PAYMENTS.BASE
+      }/filter?${params.toString()}`;
       return await API.get(endpoint);
     } catch (error) {
       Toast.error("Error al filtrar pagos");

@@ -783,15 +783,19 @@ window.initBookings = initBookings;
 async function applyBookingFilters() {
   try {
     const filters = {
-      status: document.getElementById('booking-status-filter')?.value || null,
-      userEmail: document.getElementById('booking-user-filter')?.value?.trim() || null,
-      destination: document.getElementById('booking-destination-filter')?.value?.trim() || null,
-      dateFrom: document.getElementById('booking-date-from-filter')?.value || null,
-      dateTo: document.getElementById('booking-date-to-filter')?.value || null
+      status: document.getElementById("booking-status-filter")?.value || null,
+      userEmail:
+        document.getElementById("booking-user-filter")?.value?.trim() || null,
+      destination:
+        document.getElementById("booking-destination-filter")?.value?.trim() ||
+        null,
+      dateFrom:
+        document.getElementById("booking-date-from-filter")?.value || null,
+      dateTo: document.getElementById("booking-date-to-filter")?.value || null,
     };
 
     // Remover filtros vacíos
-    Object.keys(filters).forEach(key => {
+    Object.keys(filters).forEach((key) => {
       if (!filters[key]) delete filters[key];
     });
 
@@ -804,8 +808,8 @@ async function applyBookingFilters() {
 
     displayAdminBookings(bookings);
   } catch (error) {
-    console.error('Error al aplicar filtros de reservas:', error);
-    Toast.error('Error al filtrar reservas');
+    console.error("Error al aplicar filtros de reservas:", error);
+    Toast.error("Error al filtrar reservas");
   }
 }
 
@@ -813,11 +817,11 @@ async function applyBookingFilters() {
  * Limpia todos los filtros de reservas
  */
 async function clearBookingFilters() {
-  document.getElementById('booking-status-filter').value = '';
-  document.getElementById('booking-user-filter').value = '';
-  document.getElementById('booking-destination-filter').value = '';
-  document.getElementById('booking-date-from-filter').value = '';
-  document.getElementById('booking-date-to-filter').value = '';
-  
+  document.getElementById("booking-status-filter").value = "";
+  document.getElementById("booking-user-filter").value = "";
+  document.getElementById("booking-destination-filter").value = "";
+  document.getElementById("booking-date-from-filter").value = "";
+  document.getElementById("booking-date-to-filter").value = "";
+
   await loadAdminBookings();
 }

@@ -52,7 +52,7 @@ public class TravelController {
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate arrivalDate,
       @RequestParam(required = false) String status) {
-    
+
     List<TravelEntity> travels = manageTravelsUseCase.filterTravels(destination, departureDate, arrivalDate, status);
     List<TravelResponse> response = travels.stream()
         .map(travelMapper::toResponse)

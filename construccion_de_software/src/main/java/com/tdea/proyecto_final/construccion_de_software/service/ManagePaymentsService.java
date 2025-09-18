@@ -145,13 +145,14 @@ public class ManagePaymentsService {
         .collect(Collectors.toList());
   }
 
-  public List<PaymentResponse> filterPayments(String userEmail, String paymentMethod, 
+  public List<PaymentResponse> filterPayments(String userEmail, String paymentMethod,
       BigDecimal minAmount, BigDecimal maxAmount, LocalDate dateFrom, LocalDate dateTo) {
     List<PaymentEntity> payments = paymentRepository.findAll();
-    
+
     return payments.stream()
-        .filter(payment -> userEmail == null || (payment.getBooking() != null && payment.getBooking().getUser() != null && 
-            payment.getBooking().getUser().getEmail().toLowerCase().contains(userEmail.toLowerCase())))
+        .filter(
+            payment -> userEmail == null || (payment.getBooking() != null && payment.getBooking().getUser() != null &&
+                payment.getBooking().getUser().getEmail().toLowerCase().contains(userEmail.toLowerCase())))
         .filter(payment -> paymentMethod == null || payment.getPaymentMethod().equalsIgnoreCase(paymentMethod))
         .filter(payment -> minAmount == null || payment.getAmount().compareTo(minAmount) >= 0)
         .filter(payment -> maxAmount == null || payment.getAmount().compareTo(maxAmount) <= 0)

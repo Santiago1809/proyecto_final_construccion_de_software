@@ -69,8 +69,9 @@ public class PaymentController {
       @RequestParam(required = false) BigDecimal maxAmount,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
       @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
-    
-    List<PaymentResponse> payments = managePaymentsUseCase.filterPayments(userEmail, paymentMethod, minAmount, maxAmount, dateFrom, dateTo);
+
+    List<PaymentResponse> payments = managePaymentsUseCase.filterPayments(userEmail, paymentMethod, minAmount,
+        maxAmount, dateFrom, dateTo);
     return ResponseEntity.ok(payments);
   }
 

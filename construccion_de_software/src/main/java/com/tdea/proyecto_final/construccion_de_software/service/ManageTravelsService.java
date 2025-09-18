@@ -45,13 +45,17 @@ public class ManageTravelsService {
     travelRepository.deleteById(id);
   }
 
-  public List<TravelEntity> filterTravels(String destination, LocalDate departureDate, LocalDate arrivalDate, String status) {
+  public List<TravelEntity> filterTravels(String destination, LocalDate departureDate, LocalDate arrivalDate,
+      String status) {
     List<TravelEntity> travels = travelRepository.findAll();
-    
+
     return travels.stream()
-        .filter(travel -> destination == null || travel.getDestination().toLowerCase().contains(destination.toLowerCase()))
-        .filter(travel -> departureDate == null || travel.getDepartureDate().isAfter(departureDate) || travel.getDepartureDate().isEqual(departureDate))
-        .filter(travel -> arrivalDate == null || travel.getReturnDate().isBefore(arrivalDate) || travel.getReturnDate().isEqual(arrivalDate))
+        .filter(
+            travel -> destination == null || travel.getDestination().toLowerCase().contains(destination.toLowerCase()))
+        .filter(travel -> departureDate == null || travel.getDepartureDate().isAfter(departureDate)
+            || travel.getDepartureDate().isEqual(departureDate))
+        .filter(travel -> arrivalDate == null || travel.getReturnDate().isBefore(arrivalDate)
+            || travel.getReturnDate().isEqual(arrivalDate))
         .filter(travel -> status == null || status.equals("") || travel.getStatus().equalsIgnoreCase(status))
         .collect(Collectors.toList());
   }
