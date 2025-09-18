@@ -1,9 +1,11 @@
 package com.tdea.proyecto_final.construccion_de_software.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tdea.proyecto_final.construccion_de_software.dto.BookingRequest;
@@ -40,6 +43,21 @@ public class BookingController {
   @GetMapping
   public ResponseEntity<List<BookingResponse>> listBookings() {
     List<BookingEntity> bookings = manageBookingsUseCase.listBookings();
+    List<BookingResponse> response = bookings.stream()
+        .map(bookingMapper::toResponse)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<List<BookingResponse>> filter(
+      @RequestParam(required = false) String status,
+      @RequestParam(required = false) String userEmail,
+      @RequestParam(required = false) String destination,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
+    
+    List<BookingEntity> bookings = manageBookingsUseCase.filterBookings(status, userEmail, destination, dateFrom, dateTo);
     List<BookingResponse> response = bookings.stream()
         .map(bookingMapper::toResponse)
         .collect(Collectors.toList());

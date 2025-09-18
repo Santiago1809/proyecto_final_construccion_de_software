@@ -24,7 +24,26 @@ public class PaymentMapper {
     response.setPaymentDate(payment.getPaymentDate());
     response.setPaymentMethod(payment.getPaymentMethod());
     response.setBookingId(payment.getBooking() != null ? payment.getBooking().getId() : null);
-    response.setStatus("COMPLETED");
+
+    // Mapear información del usuario
+    if (payment.getBooking() != null && payment.getBooking().getUser() != null) {
+      PaymentResponse.UserInfo userInfo = new PaymentResponse.UserInfo();
+      userInfo.setId(payment.getBooking().getUser().getId());
+      userInfo.setEmail(payment.getBooking().getUser().getEmail());
+      userInfo.setFirstName(payment.getBooking().getUser().getName());
+      userInfo.setLastName(payment.getBooking().getUser().getSurname());
+      response.setUserInfo(userInfo);
+    }
+
+    // Mapear información del viaje
+    if (payment.getBooking() != null && payment.getBooking().getTravel() != null) {
+      PaymentResponse.TravelInfo travelInfo = new PaymentResponse.TravelInfo();
+      travelInfo.setId(payment.getBooking().getTravel().getId());
+      travelInfo.setDestination(payment.getBooking().getTravel().getDestination());
+      travelInfo.setDepartureDate(payment.getBooking().getTravel().getDepartureDate());
+      travelInfo.setReturnDate(payment.getBooking().getTravel().getReturnDate());
+      response.setTravelInfo(travelInfo);
+    }
 
     return response;
   }

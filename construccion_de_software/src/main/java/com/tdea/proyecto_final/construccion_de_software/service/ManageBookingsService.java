@@ -1,6 +1,8 @@
 package com.tdea.proyecto_final.construccion_de_software.service;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -89,5 +91,17 @@ public class ManageBookingsService {
 
     booking.setStatus(newStatus);
     return bookingRepository.save(booking);
+  }
+
+  public List<BookingEntity> filterBookings(String status, String userEmail, String destination, LocalDate dateFrom, LocalDate dateTo) {
+    List<BookingEntity> bookings = bookingRepository.findAll();
+    
+    return bookings.stream()
+        .filter(booking -> status == null || status.equals("") || booking.getStatus().equalsIgnoreCase(status))
+        .filter(booking -> userEmail == null || booking.getUser().getEmail().toLowerCase().contains(userEmail.toLowerCase()))
+        .filter(booking -> destination == null || booking.getTravel().getDestination().toLowerCase().contains(destination.toLowerCase()))
+        .filter(booking -> dateFrom == null || !booking.getTravel().getDepartureDate().isBefore(dateFrom))
+        .filter(booking -> dateTo == null || !booking.getTravel().getDepartureDate().isAfter(dateTo))
+        .collect(Collectors.toList());
   }
 }

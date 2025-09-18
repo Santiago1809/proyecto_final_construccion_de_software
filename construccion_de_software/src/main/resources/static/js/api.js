@@ -215,6 +215,23 @@ const TravelAPI = {
     Toast.success("Viaje eliminado correctamente");
     return result;
   },
+
+  /**
+   * Filtra viajes por criterios
+   * @param {object} filters - Filtros a aplicar
+   * @returns {Promise} Lista de viajes filtrados
+   */
+  async filter(filters) {
+    const params = new URLSearchParams();
+    
+    if (filters.destination) params.append('destination', filters.destination);
+    if (filters.departureDate) params.append('departureDate', filters.departureDate);
+    if (filters.arrivalDate) params.append('arrivalDate', filters.arrivalDate);
+    if (filters.status) params.append('status', filters.status);
+    
+    const endpoint = `${CONFIG.ENDPOINTS.TRAVELS.BASE}/filter?${params.toString()}`;
+    return await API.get(endpoint);
+  },
 };
 
 /**
@@ -314,6 +331,29 @@ const BookingAPI = {
       throw error;
     }
   },
+
+  /**
+   * Filtra reservas por criterios
+   * @param {object} filters - Filtros a aplicar
+   * @returns {Promise} Lista de reservas filtradas
+   */
+  async filter(filters) {
+    try {
+      const params = new URLSearchParams();
+      
+      if (filters.status) params.append('status', filters.status);
+      if (filters.userEmail) params.append('userEmail', filters.userEmail);
+      if (filters.destination) params.append('destination', filters.destination);
+      if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+      if (filters.dateTo) params.append('dateTo', filters.dateTo);
+      
+      const endpoint = `${CONFIG.ENDPOINTS.BOOKINGS.BASE}/filter?${params.toString()}`;
+      return await API.get(endpoint);
+    } catch (error) {
+      Toast.error("Error al filtrar reservas");
+      throw error;
+    }
+  },
 };
 
 /**
@@ -353,6 +393,43 @@ const PaymentAPI = {
       return await API.get(endpoint);
     } catch (error) {
       Toast.error("Error al cargar el resumen de pago");
+      throw error;
+    }
+  },
+
+  /**
+   * Obtiene todos los pagos
+   * @returns {Promise} Lista de pagos
+   */
+  async getAll() {
+    try {
+      return await API.get(CONFIG.ENDPOINTS.PAYMENTS.BASE);
+    } catch (error) {
+      Toast.error("Error al cargar los pagos");
+      throw error;
+    }
+  },
+
+  /**
+   * Filtra pagos por criterios
+   * @param {object} filters - Filtros a aplicar
+   * @returns {Promise} Lista de pagos filtrados
+   */
+  async filter(filters) {
+    try {
+      const params = new URLSearchParams();
+      
+      if (filters.userEmail) params.append('userEmail', filters.userEmail);
+      if (filters.paymentMethod) params.append('paymentMethod', filters.paymentMethod);
+      if (filters.minAmount) params.append('minAmount', filters.minAmount);
+      if (filters.maxAmount) params.append('maxAmount', filters.maxAmount);
+      if (filters.dateFrom) params.append('dateFrom', filters.dateFrom);
+      if (filters.dateTo) params.append('dateTo', filters.dateTo);
+      
+      const endpoint = `${CONFIG.ENDPOINTS.PAYMENTS.BASE}/filter?${params.toString()}`;
+      return await API.get(endpoint);
+    } catch (error) {
+      Toast.error("Error al filtrar pagos");
       throw error;
     }
   },

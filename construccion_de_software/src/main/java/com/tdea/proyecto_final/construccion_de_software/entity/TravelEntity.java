@@ -32,6 +32,7 @@ public class TravelEntity {
   private BigDecimal price;
   @Column(length = 2000)
   private String itinerary;
+  private String status = "ACTIVE"; // ACTIVE, INACTIVE, CANCELLED
 
   @OneToMany(mappedBy = "travel")
   @JsonManagedReference("travel-bookings")

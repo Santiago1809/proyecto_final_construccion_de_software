@@ -3,6 +3,27 @@
 /**
  * Muestra el modal de pago para una reserva
  * @param {number} bookingId - ID de la reserva
+ *//**
+ * Carga y muestra todos los pagos para el admin
+ */
+async function loadAdminPayments() {
+  try {
+    const payments = await PaymentAPI.getAll();
+    displayAdminPayments(payments);
+  } catch (error) {
+    console.error("Error cargando pagos para admin:", error);
+    document.getElementById("admin-payments-list").innerHTML = `
+            <div class="text-center py-8">
+                <i class="fas fa-exclamation-triangle text-4xl text-gray-400 mb-4"></i>
+                <p class="text-gray-600">Error al cargar los pagos. Intenta de nuevo más tarde.</p>
+            </div>
+        `;
+  }
+}
+
+/**
+ * Muestra el modal de pago para una reserva
+ * @param {number} bookingId - ID de la reserva
  */
 async function showPaymentModal(bookingId) {
   try {
@@ -257,7 +278,6 @@ function generatePaymentStats(payments) {
  */
 function createPaymentCard(payment) {
   const methodIcon = getPaymentMethodIcon(payment.paymentMethod);
-  const statusClass = payment.status === "COMPLETED" ? "confirmed" : "pending";
 
   return `
         <div class="payment-card admin-item">
@@ -274,24 +294,15 @@ function createPaymentCard(payment) {
                       payment.amount
                     )}</span>
                     <span><i class="fas fa-map-marker-alt"></i> ${escapeHtml(
-                      payment.booking?.travel?.destination ||
+                      payment.travelInfo?.destination ||
                         "Destino no disponible"
                     )}</span>
                     <span><i class="fas fa-user"></i> ${escapeHtml(
-                      payment.booking?.user?.name || "Usuario no disponible"
+                      payment.userInfo?.firstName || "Usuario no disponible"
                     )} ${escapeHtml(
-    payment.booking?.user?.surname || ""
+    payment.userInfo?.lastName || ""
   )}</span>
                 </div>
-            </div>
-            <div class="admin-item-actions">
-                <span class="booking-status ${statusClass}">
-                    ${
-                      payment.status === "COMPLETED"
-                        ? "Completado"
-                        : "Pendiente"
-                    }
-                </span>
             </div>
         </div>
     `;
@@ -334,7 +345,56 @@ function initPayments() {
   initPaymentForm();
 }
 
+/**
+ * Aplica filtros para pagos
+ */
+async function applyPaymentFilters() {
+  try {
+    const filters = {
+      userEmail: document.getElementById('payment-user-filter')?.value?.trim() || null,
+      paymentMethod: document.getElementById('payment-method-filter')?.value || null,
+      minAmount: document.getElementById('payment-amount-min-filter')?.value || null,
+      maxAmount: document.getElementById('payment-amount-max-filter')?.value || null,
+      dateFrom: document.getElementById('payment-date-from-filter')?.value || null,
+      dateTo: document.getElementById('payment-date-to-filter')?.value || null
+    };
+
+    // Remover filtros vacíos
+    Object.keys(filters).forEach(key => {
+      if (!filters[key]) delete filters[key];
+    });
+
+    let payments;
+    if (Object.keys(filters).length > 0) {
+      payments = await PaymentAPI.filter(filters);
+    } else {
+      payments = await PaymentAPI.getAll();
+    }
+
+    displayAdminPayments(payments);
+  } catch (error) {
+    console.error('Error al aplicar filtros de pagos:', error);
+    Toast.error('Error al filtrar pagos');
+  }
+}
+
+/**
+ * Limpia todos los filtros de pagos
+ */
+async function clearPaymentFilters() {
+  document.getElementById('payment-user-filter').value = '';
+  document.getElementById('payment-method-filter').value = '';
+  document.getElementById('payment-amount-min-filter').value = '';
+  document.getElementById('payment-amount-max-filter').value = '';
+  document.getElementById('payment-date-from-filter').value = '';
+  document.getElementById('payment-date-to-filter').value = '';
+  
+  await loadAdminPayments();
+}
+
 // Exportar funciones para uso global
 window.showPaymentModal = showPaymentModal;
 window.loadAdminPayments = loadAdminPayments;
+window.applyPaymentFilters = applyPaymentFilters;
+window.clearPaymentFilters = clearPaymentFilters;
 window.initPayments = initPayments;

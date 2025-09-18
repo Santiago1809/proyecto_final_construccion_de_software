@@ -3,6 +3,7 @@ package com.tdea.proyecto_final.construccion_de_software.service;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -135,5 +136,28 @@ public class ManagePaymentsService {
 
     // Eliminar el pago
     paymentRepository.deleteById(paymentId);
+  }
+
+  public List<PaymentResponse> getAllPayments() {
+    List<PaymentEntity> payments = paymentRepository.findAll();
+    return payments.stream()
+        .map(paymentMapper::toResponse)
+        .collect(Collectors.toList());
+  }
+
+  public List<PaymentResponse> filterPayments(String userEmail, String paymentMethod, 
+      BigDecimal minAmount, BigDecimal maxAmount, LocalDate dateFrom, LocalDate dateTo) {
+    List<PaymentEntity> payments = paymentRepository.findAll();
+    
+    return payments.stream()
+        .filter(payment -> userEmail == null || (payment.getBooking() != null && payment.getBooking().getUser() != null && 
+            payment.getBooking().getUser().getEmail().toLowerCase().contains(userEmail.toLowerCase())))
+        .filter(payment -> paymentMethod == null || payment.getPaymentMethod().equalsIgnoreCase(paymentMethod))
+        .filter(payment -> minAmount == null || payment.getAmount().compareTo(minAmount) >= 0)
+        .filter(payment -> maxAmount == null || payment.getAmount().compareTo(maxAmount) <= 0)
+        .filter(payment -> dateFrom == null || !payment.getPaymentDate().isBefore(dateFrom))
+        .filter(payment -> dateTo == null || !payment.getPaymentDate().isAfter(dateTo))
+        .map(paymentMapper::toResponse)
+        .collect(Collectors.toList());
   }
 }

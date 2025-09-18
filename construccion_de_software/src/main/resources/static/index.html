@@ -284,6 +284,44 @@
               Nuevo Viaje
             </button>
           </div>
+          
+          <!-- Travel Filters -->
+          <div class="filters-section">
+            <div class="filters-grid">
+              <div class="filter-group">
+                <label for="travel-destination-filter">Destino:</label>
+                <input type="text" id="travel-destination-filter" placeholder="Buscar por destino">
+              </div>
+              <div class="filter-group">
+                <label for="travel-departure-filter">Fecha de Salida:</label>
+                <input type="date" id="travel-departure-filter">
+              </div>
+              <div class="filter-group">
+                <label for="travel-arrival-filter">Fecha de Llegada:</label>
+                <input type="date" id="travel-arrival-filter">
+              </div>
+              <div class="filter-group">
+                <label for="travel-status-filter">Estado:</label>
+                <select id="travel-status-filter">
+                  <option value="">Todos los estados</option>
+                  <option value="ACTIVE">Activo</option>
+                  <option value="INACTIVE">Inactivo</option>
+                  <option value="CANCELLED">Cancelado</option>
+                </select>
+              </div>
+              <div class="filter-actions">
+                <button class="secondary-button" onclick="applyTravelFilters()">
+                  <i class="fas fa-search"></i>
+                  Filtrar
+                </button>
+                <button class="tertiary-button" onclick="clearTravelFilters()">
+                  <i class="fas fa-times"></i>
+                  Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div id="admin-travels-list" class="admin-list">
             <!-- Admin travels will be loaded here -->
           </div>
@@ -296,6 +334,49 @@
           <div class="page-header">
             <h2>Gestión de Reservas</h2>
           </div>
+          
+          <!-- Booking Filters -->
+          <div class="filters-section">
+            <div class="filters-grid">
+              <div class="filter-group">
+                <label for="booking-status-filter">Estado:</label>
+                <select id="booking-status-filter">
+                  <option value="">Todos los estados</option>
+                  <option value="PENDING">Pendiente</option>
+                  <option value="CONFIRMED">Confirmada</option>
+                  <option value="PAID">Pagada</option>
+                  <option value="CANCELLED">Cancelada</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="booking-user-filter">Usuario:</label>
+                <input type="text" id="booking-user-filter" placeholder="Buscar por email del usuario">
+              </div>
+              <div class="filter-group">
+                <label for="booking-destination-filter">Destino:</label>
+                <input type="text" id="booking-destination-filter" placeholder="Buscar por destino">
+              </div>
+              <div class="filter-group">
+                <label for="booking-date-from-filter">Desde:</label>
+                <input type="date" id="booking-date-from-filter">
+              </div>
+              <div class="filter-group">
+                <label for="booking-date-to-filter">Hasta:</label>
+                <input type="date" id="booking-date-to-filter">
+              </div>
+              <div class="filter-actions">
+                <button class="secondary-button" onclick="applyBookingFilters()">
+                  <i class="fas fa-search"></i>
+                  Filtrar
+                </button>
+                <button class="tertiary-button" onclick="clearBookingFilters()">
+                  <i class="fas fa-times"></i>
+                  Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div id="admin-bookings-list" class="admin-list">
             <!-- Admin bookings will be loaded here -->
           </div>
@@ -308,6 +389,53 @@
           <div class="page-header">
             <h2>Gestión de Pagos</h2>
           </div>
+          
+          <!-- Payment Filters -->
+          <div class="filters-section">
+            <div class="filters-grid">
+              <div class="filter-group">
+                <label for="payment-user-filter">Usuario:</label>
+                <input type="text" id="payment-user-filter" placeholder="Buscar por email del usuario">
+              </div>
+              <div class="filter-group">
+                <label for="payment-method-filter">Método de Pago:</label>
+                <select id="payment-method-filter">
+                  <option value="">Todos los métodos</option>
+                  <option value="CREDIT_CARD">Tarjeta de Crédito</option>
+                  <option value="DEBIT_CARD">Tarjeta de Débito</option>
+                  <option value="BANK_TRANSFER">Transferencia Bancaria</option>
+                  <option value="PSE">PSE</option>
+                </select>
+              </div>
+              <div class="filter-group">
+                <label for="payment-amount-min-filter">Monto Mínimo:</label>
+                <input type="number" id="payment-amount-min-filter" placeholder="0" min="0" step="0.01">
+              </div>
+              <div class="filter-group">
+                <label for="payment-amount-max-filter">Monto Máximo:</label>
+                <input type="number" id="payment-amount-max-filter" placeholder="Sin límite" min="0" step="0.01">
+              </div>
+              <div class="filter-group">
+                <label for="payment-date-from-filter">Desde:</label>
+                <input type="date" id="payment-date-from-filter">
+              </div>
+              <div class="filter-group">
+                <label for="payment-date-to-filter">Hasta:</label>
+                <input type="date" id="payment-date-to-filter">
+              </div>
+              <div class="filter-actions">
+                <button class="secondary-button" onclick="applyPaymentFilters()">
+                  <i class="fas fa-search"></i>
+                  Filtrar
+                </button>
+                <button class="tertiary-button" onclick="clearPaymentFilters()">
+                  <i class="fas fa-times"></i>
+                  Limpiar
+                </button>
+              </div>
+            </div>
+          </div>
+          
           <div id="admin-payments-list" class="payments-list">
             <!-- Payments will be loaded here -->
           </div>

@@ -460,6 +460,49 @@ function initTravels() {
   initEditTravelForm();
 }
 
+/**
+ * Aplica filtros para viajes
+ */
+async function applyTravelFilters() {
+  try {
+    const filters = {
+      destination: document.getElementById('travel-destination-filter')?.value?.trim() || null,
+      departureDate: document.getElementById('travel-departure-filter')?.value || null,
+      arrivalDate: document.getElementById('travel-arrival-filter')?.value || null,
+      status: document.getElementById('travel-status-filter')?.value || null
+    };
+
+    // Remover filtros vacíos
+    Object.keys(filters).forEach(key => {
+      if (!filters[key]) delete filters[key];
+    });
+
+    let travels;
+    if (Object.keys(filters).length > 0) {
+      travels = await TravelAPI.filter(filters);
+    } else {
+      travels = await TravelAPI.getAll();
+    }
+
+    displayAdminTravels(travels);
+  } catch (error) {
+    console.error('Error al aplicar filtros de viajes:', error);
+    Toast.error('Error al filtrar viajes');
+  }
+}
+
+/**
+ * Limpia todos los filtros de viajes
+ */
+async function clearTravelFilters() {
+  document.getElementById('travel-destination-filter').value = '';
+  document.getElementById('travel-departure-filter').value = '';
+  document.getElementById('travel-arrival-filter').value = '';
+  document.getElementById('travel-status-filter').value = '';
+  
+  await loadAdminTravels();
+}
+
 // Exportar funciones para uso global
 window.loadTravels = loadTravels;
 window.showTravelDetails = showTravelDetails;
@@ -467,4 +510,6 @@ window.showEditTravelModal = showEditTravelModal;
 window.deleteTravel = deleteTravel;
 window.loadAdminTravels = loadAdminTravels;
 window.showCreateTravelModal = showCreateTravelModal;
+window.applyTravelFilters = applyTravelFilters;
+window.clearTravelFilters = clearTravelFilters;
 window.initTravels = initTravels;

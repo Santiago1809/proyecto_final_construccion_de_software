@@ -773,4 +773,51 @@ window.deleteBooking = deleteBooking;
 window.showEditBookingModal = showEditBookingModal;
 window.showBookingDetailsModal = showBookingDetailsModal;
 window.saveBookingChanges = saveBookingChanges;
+window.applyBookingFilters = applyBookingFilters;
+window.clearBookingFilters = clearBookingFilters;
 window.initBookings = initBookings;
+
+/**
+ * Aplica filtros para reservas
+ */
+async function applyBookingFilters() {
+  try {
+    const filters = {
+      status: document.getElementById('booking-status-filter')?.value || null,
+      userEmail: document.getElementById('booking-user-filter')?.value?.trim() || null,
+      destination: document.getElementById('booking-destination-filter')?.value?.trim() || null,
+      dateFrom: document.getElementById('booking-date-from-filter')?.value || null,
+      dateTo: document.getElementById('booking-date-to-filter')?.value || null
+    };
+
+    // Remover filtros vacíos
+    Object.keys(filters).forEach(key => {
+      if (!filters[key]) delete filters[key];
+    });
+
+    let bookings;
+    if (Object.keys(filters).length > 0) {
+      bookings = await BookingAPI.filter(filters);
+    } else {
+      bookings = await BookingAPI.getAll();
+    }
+
+    displayAdminBookings(bookings);
+  } catch (error) {
+    console.error('Error al aplicar filtros de reservas:', error);
+    Toast.error('Error al filtrar reservas');
+  }
+}
+
+/**
+ * Limpia todos los filtros de reservas
+ */
+async function clearBookingFilters() {
+  document.getElementById('booking-status-filter').value = '';
+  document.getElementById('booking-user-filter').value = '';
+  document.getElementById('booking-destination-filter').value = '';
+  document.getElementById('booking-date-from-filter').value = '';
+  document.getElementById('booking-date-to-filter').value = '';
+  
+  await loadAdminBookings();
+}

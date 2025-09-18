@@ -1,8 +1,11 @@
 package com.tdea.proyecto_final.construccion_de_software.controller;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tdea.proyecto_final.construccion_de_software.dto.ErrorResponse;
@@ -49,6 +53,25 @@ public class PaymentController {
       ErrorResponse error = new ErrorResponse(400, "BOOKING_NOT_FOUND", e.getMessage(), LocalDateTime.now());
       return ResponseEntity.badRequest().body(error);
     }
+  }
+
+  @GetMapping
+  public ResponseEntity<List<PaymentResponse>> getAllPayments() {
+    List<PaymentResponse> payments = managePaymentsUseCase.getAllPayments();
+    return ResponseEntity.ok(payments);
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<List<PaymentResponse>> filter(
+      @RequestParam(required = false) String userEmail,
+      @RequestParam(required = false) String paymentMethod,
+      @RequestParam(required = false) BigDecimal minAmount,
+      @RequestParam(required = false) BigDecimal maxAmount,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateFrom,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dateTo) {
+    
+    List<PaymentResponse> payments = managePaymentsUseCase.filterPayments(userEmail, paymentMethod, minAmount, maxAmount, dateFrom, dateTo);
+    return ResponseEntity.ok(payments);
   }
 
   @GetMapping("/booking/{bookingId}")

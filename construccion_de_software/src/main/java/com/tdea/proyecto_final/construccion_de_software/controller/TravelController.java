@@ -1,9 +1,11 @@
 package com.tdea.proyecto_final.construccion_de_software.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tdea.proyecto_final.construccion_de_software.dto.TravelResponse;
@@ -37,6 +40,20 @@ public class TravelController {
   @GetMapping
   public ResponseEntity<List<TravelResponse>> list() {
     List<TravelEntity> travels = manageTravelsUseCase.listTravels();
+    List<TravelResponse> response = travels.stream()
+        .map(travelMapper::toResponse)
+        .collect(Collectors.toList());
+    return ResponseEntity.ok(response);
+  }
+
+  @GetMapping("/filter")
+  public ResponseEntity<List<TravelResponse>> filter(
+      @RequestParam(required = false) String destination,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate departureDate,
+      @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate arrivalDate,
+      @RequestParam(required = false) String status) {
+    
+    List<TravelEntity> travels = manageTravelsUseCase.filterTravels(destination, departureDate, arrivalDate, status);
     List<TravelResponse> response = travels.stream()
         .map(travelMapper::toResponse)
         .collect(Collectors.toList());
